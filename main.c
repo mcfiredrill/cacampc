@@ -33,6 +33,7 @@ int main(int argc, char **argv){
 	struct mpd_connection *conn;
 	struct mpd_status *status;
 	struct mpd_song *song;
+	int vol;
 
 	caca_canvas_t *cv, *sprite, *banner;
 	caca_display_t *dp;
@@ -79,7 +80,7 @@ int main(int argc, char **argv){
 		song = mpd_run_current_song(conn);
 		songtitle = mpd_song_get_uri(song);
 		caca_printf(cv, 0, 2, "%s", songtitle);
-		caca_put_figchar(banner, songtitle[0]);
+		//caca_put_figchar(banner, songtitle[0]);
 		caca_blit(cv, 30, 6, sprite, NULL);
 		caca_blit(cv, 0, 10, banner, NULL);
 		while(caca_get_event(dp, CACA_EVENT_ANY, &ev, 0)){
@@ -90,8 +91,22 @@ int main(int argc, char **argv){
 					case CACA_KEY_ESCAPE:
 						quit = 1;
 						break;
-					//case '+':
-					//case '-':
+					case '+': //increase volume
+						vol = mpd_status_get_volume(status);
+						if(vol + 1 <= 100)
+							mpd_run_set_volume(conn, mpd_status_get_volume(status)+1);
+						break;
+					case '-': //decrease volume
+						vol = mpd_status_get_volume(status);
+						if(vol - 1 <= 100)
+						mpd_run_set_volume(conn, mpd_status_get_volume(status)-1);
+						break;
+					case '>': //next song in playlist
+						mpd_run_next(conn);
+						break;
+					case '<': //previous song in playlist
+						mpd_run_previous(conn);
+						break;
 				}
 			}
 		}
