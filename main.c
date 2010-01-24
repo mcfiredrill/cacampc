@@ -4,6 +4,10 @@
 
 #include <caca.h>
 #include <mpd/client.h>
+#include "main.h"
+
+
+int cur_scr = halp;
 
 static char const ducks[] =
 "                                __\n"
@@ -12,6 +16,22 @@ static char const ducks[] =
 "                             `___'\n"
 " _0< _o<_O<_0<_o<_O<_o<_o<_0<_O<\n"
 "'_) '_)'_)'_)'_)'_)'_)'_)'_)'_)\n";
+
+void draw_halp(caca_display_t *dp, caca_canvas_t *cv){
+}
+
+void draw_playlist(caca_display_t *dp, caca_canvas_t *cv){
+	caca_canvas_t *sprite;
+	sprite = caca_create_canvas(0, 0);
+
+	caca_set_color_ansi(cv, CACA_RED, CACA_BLACK);
+	caca_set_color_ansi(sprite, CACA_YELLOW, CACA_BLACK);
+	caca_import_canvas_from_memory(sprite, ducks, strlen(ducks), "text");
+	caca_blit(cv, 30, 6, sprite, NULL);
+	caca_printf(cv, 0, 10, "BUTTTT");
+
+	return;
+}
 
 struct mpd_connection *mpd_init_connection(){
 	struct mpd_connection *conn;
@@ -35,7 +55,7 @@ int main(int argc, char **argv){
 	struct mpd_song *song;
 	int vol;
 
-	caca_canvas_t *cv, *sprite, *banner;
+	caca_canvas_t *cv;
 	caca_display_t *dp;
 
 	int quit = 0;
@@ -54,14 +74,7 @@ int main(int argc, char **argv){
 		printf("Couldn't create display!\n");
 		exit(1);
 	}
-	sprite = caca_create_canvas(0, 0);
-	banner = caca_create_canvas(0, 0);
-	if(caca_canvas_set_figfont(banner, "/usr/share/figlet/smblock.tlf"))
-		printf("Couldn't open figfont\n");
 	caca_set_display_time(dp, 40000);
-	caca_set_color_ansi(cv, CACA_RED, CACA_BLACK);
-	caca_set_color_ansi(sprite, CACA_YELLOW, CACA_BLACK);
-	caca_import_canvas_from_memory(sprite, ducks, strlen(ducks), "text");
 
 
 	while(!quit){
@@ -76,16 +89,26 @@ int main(int argc, char **argv){
 			mpd_status_get_elapsed_time(status) % 60,
 			mpd_status_get_total_time(status) / 60,
 			mpd_status_get_total_time(status) % 60);
-		//mpd_send_current_song(conn);
 		song = mpd_run_current_song(conn);
 		songtitle = mpd_song_get_uri(song);
 		caca_printf(cv, 0, 2, "%s", songtitle);
-		//caca_put_figchar(banner, songtitle[0]);
-		caca_blit(cv, 30, 6, sprite, NULL);
-		caca_blit(cv, 0, 10, banner, NULL);
+		switch(cur_scr){
+			case halp:
+				draw_halp(dp, cv);
+				break;
+			case playlist:
+				draw_playlist(dp, cv);
+				break;
+		}
 		while(caca_get_event(dp, CACA_EVENT_ANY, &ev, 0)){
             if(caca_get_event_type(&ev) & CACA_EVENT_KEY_PRESS){
 				switch(caca_get_event_key_ch(&ev)){
+					case '1':
+						cur_scr = halp;
+						break;
+					case '2':
+						cur_scr = playlist;
+						break;
 					case 'q':
 					case 'Q':
 					case CACA_KEY_ESCAPE:
