@@ -15,3 +15,7 @@ commands:
 3 - browse
 4 - browse by tag
 5 - filter
+
+TODO
+-----
+autoconfify the project so I can learn autoconf

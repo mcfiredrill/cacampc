@@ -1,4 +1,4 @@
-# Makefile.  Generated from Makefile.in by configure.
+# @configure_input@
 
 SOURCES = main.c
 
@@ -6,7 +6,7 @@ CFLAGS = -Wall -std=c99 -g -O0
 
 # prefix related substituion variables
 #PREFIX=/usr/local
-PREFIX = /usr/local
+PREFIX = @prefix@
 
 cacampc: $(SOURCES)
 	gcc $(CFLAGS) -o $@ $+ `pkg-config --libs --cflags caca libmpdclient`
