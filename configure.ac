@@ -11,9 +11,11 @@ AC_PROG_CC
 AC_PROG_INSTALL
 
 # Checks for libraries.
+AC_SEARCH_LIBS([caca_create_canvas], [caca])
+AC_SEARCH_LIBS([mpd_connection_new], [mpdclient])
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h string.h])
+AC_CHECK_HEADERS([stdlib.h string.h caca.h mpd/client.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
