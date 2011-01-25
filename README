@@ -9,12 +9,32 @@ ideas
 
 * THEMES
 
-commands:
+
+---------------------------------------------------
+time            <nowplaying>                    vol
+===================================================
+
+
+commands
+~~~~~~~~~~~
 1 - halp screen
 2 - playlist screen
 3 - browse
 4 - browse by tag
 5 - filter
+6 - ?????
+
+* all screens
+    > - next song in playlist
+    < - previous song in playlist
+
+* playlist screen
+    enter - play highlighted item
+    p - pause
+    s - stop
+    j - up
+    k - down
+    i - more info
 
 TODO
 -----
