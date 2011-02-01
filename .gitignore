@@ -1,0 +1,16 @@
+*.o
+*.swp
+*.log
+src/cacampc
+Makefile
+Makefile.in
+tags
+configure
+depcomp
+config.*
+.deps
+aclocal.*
+autom4te.cache/*
+install-sh
+missing
+stamp-h1
